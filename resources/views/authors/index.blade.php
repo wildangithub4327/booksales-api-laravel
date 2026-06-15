@@ -25,7 +25,7 @@
                 <th>Nama Penulis</th>
                 <th>Foto File</th>
                 <th>Biografi</th>
-            </tr>
+                <th>Buku yang Ditulis</th> </tr>
         </thead>
         <tbody>
             @foreach($authors as $author)
@@ -34,6 +34,20 @@
                 <td><strong>{{ $author['name'] }}</strong></td>
                 <td><code>{{ $author['photo'] }}</code></td>
                 <td>{{ $author['bio'] }}</td>
+                <td>
+                    @if(count($author['books']) > 0)
+                        <ul class="mb-0 ps-3">
+                            @foreach($author['books'] as $book)
+                                <li>
+                                    <strong>{{ $book['title'] }}</strong>
+                                    <span class="text-muted">({{ $book['publication_year'] }})</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <span class="text-danger italic">Belum ada buku.</span>
+                    @endif
+                </td>
             </tr>
             @endforeach
         </tbody>
