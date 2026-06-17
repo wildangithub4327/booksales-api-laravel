@@ -26,7 +26,13 @@ class AuthorController extends Controller
             $authors[$key]['books'] = $authorBooks;
         }
 
-        // 3. Mengirimkan data yang sudah digabung ke file view authors.index
-        return view('authors.index', compact('authors'));
+        // 🔴 KODE LAMA DIHAPUS: return view('authors.index', compact('authors'));
+
+        // 🟢 KODE BARU: Mengembalikan data yang sudah dijodohkan dalam bentuk JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar data author beserta bukunya berhasil diambil',
+            'data'    => $authors
+        ], 200);
     }
 }

@@ -12,7 +12,13 @@ class GenreController extends Controller
         // Mengambil array data dari model Genre
         $genres = Genre::getAllData();
 
-        // Mengirimkan data ke file view genres.index
-        return view('genres.index', compact('genres'));
+        // 🔴 KODE LAMA DIHAPUS: return view('genres.index', compact('genres'));
+
+        // 🟢 KODE BARU: Mengembalikan data dalam bentuk JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar data genre berhasil diambil',
+            'data'    => $genres
+        ], 200);
     }
 }

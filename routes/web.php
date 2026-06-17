@@ -1,15 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GenreController; // ✅ Udah diganti "App" (A gede)
-use App\Http\Controllers\AuthorController; // ✅ Udah diganti "App" (A gede)
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Jalur rute web lama untuk genres dan authors sudah dihapus dari sini
+| karena dialihkan sepenuhnya ke API.
+|
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-// Jalur URL untuk menampilkan halaman Genre
-Route::get('/genres', [GenreController::class, 'index']);
-
-// Jalur URL untuk menampilkan halaman Author
-Route::get('/authors', [AuthorController::class, 'index']);
