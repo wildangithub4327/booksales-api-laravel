@@ -40,9 +40,7 @@ class AuthorController extends Controller
         $books = Book::getAllData();
 
         foreach ($authors as $author) {
-
             if ($author['id'] == $id) {
-
                 $authorBooks = [];
 
                 foreach ($books as $book) {
@@ -88,6 +86,17 @@ class AuthorController extends Controller
     // PUT /api/authors/{id}
     public function update(Request $request, $id)
     {
+        $authors = Author::getAllData();
+
+        // Validasi jika data ID tidak ada di array statis
+        $authorExists = collect($authors)->contains('id', (int)$id);
+        if (!$authorExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal update, data author tidak ditemukan'
+            ], 404);
+        }
+
         $request->validate([
             'name' => 'required|string'
         ]);
@@ -96,7 +105,7 @@ class AuthorController extends Controller
             'success' => true,
             'message' => 'Data author berhasil diperbarui (Simulasi)',
             'data' => [
-                'id' => $id,
+                'id' => (int)$id,
                 'name' => $request->name
             ]
         ], 200);
@@ -105,10 +114,21 @@ class AuthorController extends Controller
     // DELETE /api/authors/{id}
     public function destroy($id)
     {
+        $authors = Author::getAllData();
+
+        // Validasi jika data ID tidak ada di array statis
+        $authorExists = collect($authors)->contains('id', (int)$id);
+        if (!$authorExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus, data author tidak ditemukan'
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Data author berhasil dihapus (Simulasi)',
-            'deleted_id' => $id
+            'deleted_id' => (int)$id
         ], 200);
     }
 }

@@ -60,6 +60,17 @@ class GenreController extends Controller
     // PUT /api/genres/{id}
     public function update(Request $request, $id)
     {
+        $genres = Genre::getAllData();
+
+        // Validasi jika data ID tidak ada di array statis
+        $genreExists = collect($genres)->contains('id', (int)$id);
+        if (!$genreExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal update, data genre tidak ditemukan'
+            ], 404);
+        }
+
         $request->validate([
             'name' => 'required|string'
         ]);
@@ -68,7 +79,7 @@ class GenreController extends Controller
             'success' => true,
             'message' => 'Data genre berhasil diperbarui (Simulasi)',
             'data' => [
-                'id' => $id,
+                'id' => (int)$id,
                 'name' => $request->name
             ]
         ], 200);
@@ -77,10 +88,21 @@ class GenreController extends Controller
     // DELETE /api/genres/{id}
     public function destroy($id)
     {
+        $genres = Genre::getAllData();
+
+        // Validasi jika data ID tidak ada di array statis
+        $genreExists = collect($genres)->contains('id', (int)$id);
+        if (!$genreExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus, data genre tidak ditemukan'
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Data genre berhasil dihapus (Simulasi)',
-            'deleted_id' => $id
+            'deleted_id' => (int)$id
         ], 200);
     }
 }

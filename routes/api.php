@@ -10,41 +10,22 @@ use App\Http\Controllers\AuthorController;
 |--------------------------------------------------------------------------
 */
 
-// =========================
-// GENRE CRUD
-// =========================
-
-// Read All Genre
-Route::get('/genres', [GenreController::class, 'index']);
-
-// Read Genre By ID
-Route::get('/genres/{id}', [GenreController::class, 'show']);
-
-// Create Genre
-Route::post('/genres', [GenreController::class, 'store']);
-
-// Update Genre
-Route::put('/genres/{id}', [GenreController::class, 'update']);
-
-// Delete Genre
-Route::delete('/genres/{id}', [GenreController::class, 'destroy']);
+// =========================================================================
+// RUTE PUBLIK (Bisa diakses semua orang, bahkan yang belum login/autentikasi)
+// =========================================================================
+// Hanya mengaktifkan fitur 'index' (Read All) dan 'show' (Show 1 Data)
+Route::apiResource('genres', GenreController::class)->only(['index', 'show']);
+Route::apiResource('authors', AuthorController::class)->only(['index', 'show']);
 
 
-// =========================
-// AUTHOR CRUD
-// =========================
+// =========================================================================
+// RUTE PRIVATE/ADMIN (Hanya bisa diakses oleh yang sudah terautentikasi)
+// =========================================================================
+// Menggunakan middleware 'auth:sanctum' untuk mengunci fitur Create, Update, Destroy
+Route::middleware('auth:sanctum')->group(function () {
 
-// Read All Author
-Route::get('/authors', [AuthorController::class, 'index']);
+    // Mengaktifkan sisa fitur CRUD yaitu 'store', 'update', dan 'destroy'
+    Route::apiResource('genres', GenreController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('authors', AuthorController::class)->only(['store', 'update', 'destroy']);
 
-// Read Author By ID
-Route::get('/authors/{id}', [AuthorController::class, 'show']);
-
-// Create Author
-Route::post('/authors', [AuthorController::class, 'store']);
-
-// Update Author
-Route::put('/authors/{id}', [AuthorController::class, 'update']);
-
-// Delete Author
-Route::delete('/authors/{id}', [AuthorController::class, 'destroy']);
+});
