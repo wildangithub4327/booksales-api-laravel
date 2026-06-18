@@ -7,18 +7,80 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
+    // GET /api/genres
     public function index()
     {
-        // Mengambil array data dari model Genre
         $genres = Genre::getAllData();
 
-        // 🔴 KODE LAMA DIHAPUS: return view('genres.index', compact('genres'));
-
-        // 🟢 KODE BARU: Mengembalikan data dalam bentuk JSON
         return response()->json([
             'success' => true,
             'message' => 'Daftar data genre berhasil diambil',
-            'data'    => $genres
+            'data' => $genres
+        ], 200);
+    }
+
+    // GET /api/genres/{id}
+    public function show($id)
+    {
+        $genres = Genre::getAllData();
+
+        foreach ($genres as $genre) {
+            if ($genre['id'] == $id) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Detail genre berhasil diambil',
+                    'data' => $genre
+                ], 200);
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Genre tidak ditemukan'
+        ], 404);
+    }
+
+    // POST /api/genres
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data genre baru berhasil ditambahkan (Simulasi)',
+            'data' => [
+                'id' => rand(10, 100),
+                'name' => $request->name
+            ]
+        ], 201);
+    }
+
+    // PUT /api/genres/{id}
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data genre berhasil diperbarui (Simulasi)',
+            'data' => [
+                'id' => $id,
+                'name' => $request->name
+            ]
+        ], 200);
+    }
+
+    // DELETE /api/genres/{id}
+    public function destroy($id)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Data genre berhasil dihapus (Simulasi)',
+            'deleted_id' => $id
         ], 200);
     }
 }
